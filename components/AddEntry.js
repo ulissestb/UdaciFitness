@@ -4,6 +4,8 @@ import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
+import { Ionicons } from '@expo/vector-icons'
+import TextButton from './TextButton'
 
 function SubmitBtn({onPress}){
     return (
@@ -21,36 +23,39 @@ export default class AddEntry extends Component{
         swim: 0,
         sleep: 0,
         eat: 0,
-    }
-
-    increment = (metric)=>{
+      }
+      increment = (metric) => {
         const { max, step } = getMetricMetaInfo(metric)
-
-        this.setState( () =>{
-            const count = state[metric] + step
-
-            return {
-                ...state,
-                [metric]: count > max ? max : count
-            }
+        this.setState((state) => {
+          const count = state[metric] + step
+          return {
+            ...state,
+            [metric]: count > max ? max : count,
+          }
         })
-    }
-
-    decrement = (metric) => {
-        this.setState( () =>{
-            const count = state[metric] - getMetricMetaInfo(metric).step
-
-            return {
-                ...state,
-                [metric]: count < 0 ? 0 : count,
-            }
+      }
+      decrement = (metric) => {
+        this.setState((state) => {
+          const count = state[metric] - getMetricMetaInfo(metric).step
+          return {
+            ...state,
+            [metric]: count < 0 ? 0 : count,
+          }
         })
-    }
+      }
 
     slide = (metric, value ) => {
         this.setState( () => ({
             [metric]: value,
         }))
+    }
+
+    reset = () => {
+        const key = timeToString()
+
+        //update Redux
+        //route to home 
+        //update db
     }
 
     submit = () => {
@@ -75,6 +80,22 @@ export default class AddEntry extends Component{
 
     render(){
         const metaInfo = getMetricMetaInfo()
+
+        if (this.props.alreadyLogged){
+            return (
+                <View>
+                    <Ionicons 
+                        name='ios-happy-outline'
+                        size={100}
+                    />
+                    <Text>You already logged your information for today</Text>
+                    <TextButton onPress={this.reset()}>
+                        Reset
+                    </TextButton>
+                </View>
+            )
+        }
+
         return (
             <View>
                 <DateHeader date={(new Date()).toLocaleDateString()} />
@@ -94,8 +115,8 @@ export default class AddEntry extends Component{
                                     />    
                                 : <UdaciSteppers
                                     value={value}
-                                    onIncrement={()=>this.increment(key)}
-                                    onDecrement={()=>this.decrement(key)}
+                                    onIncrement={()=> this.increment(key)}
+                                    onDecrement={()=> this.decrement(key)}
                                     {...rest}
                                 />
                             }
