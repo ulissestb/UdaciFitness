@@ -145,3 +145,9 @@ export function getMetricMetaInfo(metric){
         ? info
         : info[metric]
 }
+
+export function getDailyReminderValue(){
+    return {
+        today: "don't forget to log your data today!"
+    }
+}
