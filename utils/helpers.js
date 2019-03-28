@@ -2,7 +2,7 @@
 import React from 'react'
 import {View, StyleSheet} from 'react-native'
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { white, red, orange, blue, lightPurp, pink } from './color'
+import { white, red, orange, blue, lightPurp, pink } from './colors'
 
 export function isBetween (num, x, y) {
     if (num >= x && num <= y) {
